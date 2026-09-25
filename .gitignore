@@ -41,6 +41,7 @@ yarn-error.log
 /.mcp.json
 /AGENTS.md
 /CLAUDE.md
+/docs
 /GEMINI.md
 /boost.json
 /opencode.json
