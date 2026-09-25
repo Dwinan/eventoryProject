@@ -19,8 +19,8 @@ class OrganizationSeeder extends Seeder
     public function run(): void
     {
         $organizations = [
-            ['name' => 'BEM UGM', 'type' => 'bem', 'email' => 'bem@eventory.test'],
-            ['name' => 'HMJ Teknik Informatika', 'type' => 'hmj', 'email' => 'hmi@eventory.test'],
+            ['name' => 'BEM U KBM Unila', 'type' => 'bem', 'email' => 'bem@eventory.test'],
+            ['name' => 'Himatro Unila', 'type' => 'hmj', 'email' => 'himatro@eventory.test'],
             ['name' => 'UKM Musik', 'type' => 'ukm', 'email' => 'ukm-musik@eventory.test'],
             ['name' => 'UKM Olahraga', 'type' => 'ukm', 'email' => 'ukm-olahraga@eventory.test'],
             ['name' => 'HMJ Manajemen', 'type' => 'hmj', 'email' => 'hmj-manajemen@eventory.test'],
