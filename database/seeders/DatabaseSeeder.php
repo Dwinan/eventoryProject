@@ -16,10 +16,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'role' => 'administrator',
+            'name' => 'Admin Eventory',
+            'email' => 'admin@eventory.test',
+        ]);
+
+        User::factory()->count(10)->create([
+            'role' => 'general',
+        ]);
+
+        // Urut sesuai dependency: ormawa -> kategori -> event -> registrasi -> bookmark
+        $this->call([
+            OrganizationSeeder::class,
+            CategorySeeder::class,
+            EventSeeder::class,
+            RegistrationSeeder::class,
+            BookmarkSeeder::class,
         ]);
     }
 }

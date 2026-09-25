@@ -30,9 +30,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => fake()->randomElement(['pengguna', 'organisasi', 'admin']),
+            'role' => fake()->randomElement(['general', 'organizer', 'administrator']),
             'npm' => fake()->randomElement([null, fake()->numerify('##########')]),
-            'phone' => fake()->randomElement([null, fake()->phoneNumber()]),
+            'phone' => fake()->randomElement([null, fake()->numerify('08##########')]),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
@@ -45,7 +45,7 @@ class UserFactory extends Factory
     public function administrator(): static
     {
         return $this->state([
-            'role' => 'admin',
+            'role' => 'administrator',
         ]);
     }
 

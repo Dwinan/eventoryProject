@@ -19,7 +19,7 @@ class OrganizationFactory extends Factory
      */
     public function definition(): array
     {
-        // Buat user role organisasi terlebih dahulu
+        // Buat user role organizer terlebih dahulu
         $user = User::factory()->create(['role' => 'organizer']);
         
         $name = fake()->randomElement(['UKM ', 'BEM ', 'HMJ ']) . fake()->words(2, true);
