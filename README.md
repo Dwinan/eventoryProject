@@ -114,8 +114,8 @@ Semua akun hasil seeding memakai password `password`. User role `general` dibuat
 | Peran | Email | Keterangan |
 | --- | --- | --- |
 | Administrator | `admin@eventory.test` | Moderasi event, kelola ormawa & pengguna |
-| Organizer | `bem@eventory.test` | BEM UGM |
-| Organizer | `hmi@eventory.test` | HMJ Teknik Informatika |
+| Organizer | `bem@eventory.test` | BEM U KBM Unila |
+| Organizer | `himatro@eventory.test` | Himatro Unila |
 | Organizer | `ukm-musik@eventory.test` | UKM Musik |
 | Organizer | `ukm-olahraga@eventory.test` | UKM Olahraga |
 | Organizer | `hmj-manajemen@eventory.test` | HMJ Manajemen |
