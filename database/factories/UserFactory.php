@@ -30,10 +30,45 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => fake()->randomElement(['pengguna', 'organisasi', 'admin']),
+            'npm' => fake()->randomElement([null, fake()->numerify('##########')]),
+            'phone' => fake()->randomElement([null, fake()->phoneNumber()]),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
         ];
+    }
+
+    /**
+     * Indicate that the user is an administrator.
+     */
+    public function administrator(): static
+    {
+        return $this->state([
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is an organization account.
+     */
+    public function organization(): static
+    {
+        return $this->state([
+            'role' => 'organizer',
+            'npm' => null,
+            'phone' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a student.
+     */
+    public function general(): static
+    {
+        return $this->state([
+            'role' => 'general',
+        ]);
     }
 
     /**

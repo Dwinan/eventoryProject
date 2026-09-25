@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('start_at');
             $table->timestamp('end_at');
             $table->string('poster')->nullable();
-            $table->unsignedInteger('quota')->nullable();
+            $table->integer('quota')->nullable();
             $table->string('status')->default('published'); //draft, published
             $table->timestamp('published_at')->nullable();
             $table->foreignId('moderated_by')->nullable()->constrained('users')->nullOnDelete();
