@@ -50,9 +50,9 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user is an organization account.
+     * Indicate that the user is an organizer.
      */
-    public function organization(): static
+    public function organizer(): static
     {
         return $this->state([
             'role' => 'organizer',

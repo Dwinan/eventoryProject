@@ -51,7 +51,7 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
-    public function organization(): HasOne // profil ormawa bila role organisasi
+    public function organization(): HasOne // profil ormawa bila role organizer
     {
         return $this->hasOne(Organization::class);
     }
