@@ -151,5 +151,24 @@ class EventManagerController extends Controller
 
         return redirect()->route('organizer.events.index')
             ->with('success', 'Event berhasil dihapus.');
+
+        
+            // index()  — ganti return Inertia::render('Organizer/Events', ...)
+return view('organizer.events.index', [
+    'events' => $events,
+    'filters' => $request->only(['status', 'search']),
+]);
+
+// create() — ganti return Inertia::render('Organizer/EventForm', ...)
+return view('organizer.events.form', [
+    'event' => null,
+    'categories' => $categories,
+]);
+
+// edit()   — ganti return Inertia::render('Organizer/EventForm', ...)
+return view('organizer.events.form', [
+    'event' => $event->load('categories'),
+    'categories' => $categories,
+]);
     }
 }

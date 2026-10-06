@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('events', [EventController::class, 'index'])->name('events.index');
 Route::get('events/{slug}', [EventController::class, 'show'])->name('events.show');
 Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('blade/events', [EventController::class, 'indexBlade'])->name('blade.events.index');
+Route::get('blade/events/{slug}', [EventController::class, 'showBlade'])->name('blade.events.show');
 
 // Authenticated
 Route::middleware(['auth', 'verified'])->group(function () {
