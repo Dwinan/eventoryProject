@@ -11,9 +11,8 @@ use Illuminate\Support\Str;
 
 class RegistrationSeeder extends Seeder
 {
-
     use WithoutModelEvents;
-    
+
     /**
      * Run the database seeds.
      */

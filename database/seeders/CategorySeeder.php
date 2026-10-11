@@ -8,9 +8,8 @@ use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-
     use WithoutModelEvents;
-    
+
     /**
      * Run the database seeds.
      */

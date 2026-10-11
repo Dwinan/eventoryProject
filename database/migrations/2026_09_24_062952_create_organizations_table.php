@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('type'); //ukm, bem, hmj
+            $table->string('type'); // ukm, bem, hmj
             $table->text('description')->nullable();
             $table->string('logo')->nullable();
             $table->boolean('is_active')->default('false');

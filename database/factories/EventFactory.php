@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Models\Event;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Event>
@@ -21,12 +21,12 @@ class EventFactory extends Factory
     public function definition(): array
     {
         $organization = Organization::where('is_active', true)->inRandomOrder()->first();
-        
+
         $startAt = Carbon::parse(fake()->dateTimeBetween('+1 week', '+3 months'));
         $endAt = (clone $startAt)->modify('+3 hours');
-        
+
         $isPublished = $startAt->isPast() || fake()->boolean(70);
-        
+
         return [
             'organization_id' => $organization?->id ?? null,
             'title' => fake()->sentence(4),
@@ -35,7 +35,7 @@ class EventFactory extends Factory
             'location' => fake()->address(),
             'start_at' => $startAt,
             'end_at' => $endAt,
-            'poster' => fake()->randomElement([null, 'storage/posters/' . Str::uuid() . '.jpg']),
+            'poster' => fake()->randomElement([null, 'storage/posters/'.Str::uuid().'.jpg']),
             'quota' => fake()->randomElement([null, fake()->numberBetween(20, 200)]),
             'status' => $isPublished ? 'published' : 'draft',
             'published_at' => $isPublished ? $startAt->subWeek() : null,

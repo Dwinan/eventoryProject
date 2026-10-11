@@ -21,16 +21,16 @@ class OrganizationFactory extends Factory
     {
         // Buat user role organizer terlebih dahulu
         $user = User::factory()->create(['role' => 'organizer']);
-        
-        $name = fake()->randomElement(['UKM ', 'BEM ', 'HMJ ']) . fake()->words(2, true);
-        
+
+        $name = fake()->randomElement(['UKM ', 'BEM ', 'HMJ ']).fake()->words(2, true);
+
         return [
             'user_id' => $user->id,
             'name' => $name,
             'slug' => Str::slug($name),
             'type' => fake()->randomElement(['ukm', 'bem', 'hmj']),
             'description' => fake()->paragraph(),
-            'logo' => fake()->randomElement([null, 'storage/logos/' . Str::slug($name) . '.png']),
+            'logo' => fake()->randomElement([null, 'storage/logos/'.Str::slug($name).'.png']),
             'is_active' => true, // default aktif untuk seeder
         ];
     }

@@ -10,7 +10,6 @@ use Illuminate\Database\Seeder;
 
 class BookmarkSeeder extends Seeder
 {
-
     use WithoutModelEvents;
 
     /**

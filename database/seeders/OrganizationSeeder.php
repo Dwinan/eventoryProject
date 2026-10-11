@@ -10,9 +10,8 @@ use Illuminate\Support\Str;
 
 class OrganizationSeeder extends Seeder
 {
-
     use WithoutModelEvents;
-    
+
     /**
      * Run the database seeds.
      */

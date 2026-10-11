@@ -22,10 +22,10 @@ class RegistrationFactory extends Factory
     {
         // Pastikan event yang dipilih adalah published agar bisa didaftar
         $event = Event::where('status', 'published')->inRandomOrder()->first();
-        
+
         // Pastikan user yang dipilih adalah general
         $user = User::where('role', 'general')->inRandomOrder()->first();
-        
+
         return [
             'event_id' => $event->id,
             'user_id' => $user->id,

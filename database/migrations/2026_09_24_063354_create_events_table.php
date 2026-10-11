@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('end_at');
             $table->string('poster')->nullable();
             $table->integer('quota')->nullable();
-            $table->string('status')->default('published'); //draft, published
+            $table->string('status')->default('published'); // draft, published
             $table->timestamp('published_at')->nullable();
             $table->foreignId('moderated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('moderated_at')->nullable();

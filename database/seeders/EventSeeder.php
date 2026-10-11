@@ -9,9 +9,8 @@ use Illuminate\Database\Seeder;
 
 class EventSeeder extends Seeder
 {
-
     use WithoutModelEvents;
-    
+
     /**
      * Run the database seeds.
      */
