@@ -1,5 +1,16 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    BookOpen,
+    Building2,
+    Calendar,
+    FolderGit2,
+    LayoutGrid,
+    MapPin,
+    QrCode,
+    ShieldCheck,
+    Tags,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -24,6 +35,47 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const organizerNavItems: NavItem[] = [
+    {
+        title: 'Event Organizer',
+        href: '/organizer/events',
+        icon: Calendar,
+    },
+    {
+        title: 'Presensi Peserta',
+        href: '/organizer/presence',
+        icon: QrCode,
+    },
+    {
+        title: 'Profil Organisasi',
+        href: '/organizer/profile',
+        icon: MapPin,
+    },
+];
+
+const adminNavItems: NavItem[] = [
+    {
+        title: 'Moderasi Event',
+        href: '/admin/events',
+        icon: ShieldCheck,
+    },
+    {
+        title: 'Kelola Organisasi',
+        href: '/admin/organizations',
+        icon: Building2,
+    },
+    {
+        title: 'Kategori Event',
+        href: '/admin/categories',
+        icon: Tags,
+    },
+    {
+        title: 'Kelola Pengguna',
+        href: '/admin/users',
+        icon: Users,
+    },
+];
+
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -31,20 +83,24 @@ const footerNavItems: NavItem[] = [
         icon: FolderGit2,
     },
     {
-        title: 'Documentation',
+        title: 'Dokumentasi',
         href: 'https://laravel.com/docs/starter-kits#react',
         icon: BookOpen,
     },
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage().props;
+    const isOrganizer = auth.user?.role === 'organizer';
+    const isAdmin = auth.user?.role === 'administrator';
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={dashboard()}>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -54,6 +110,10 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                {(isOrganizer || isAdmin) && (
+                    <NavMain items={organizerNavItems} />
+                )}
+                {isAdmin && <NavMain items={adminNavItems} />}
             </SidebarContent>
 
             <SidebarFooter>
