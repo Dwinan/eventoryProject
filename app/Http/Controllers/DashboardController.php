@@ -19,7 +19,7 @@ class DashboardController extends Controller
             $organization = $user->organization;
 
             if (! $organization) {
-                return Inertia::render('Dashboard', [
+                return Inertia::render('dashboard', [
                     'role' => 'organizer',
                     'organization' => null,
                     'events' => [],
@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'total_registrations' => $events->sum('registrations_count'),
             ];
 
-            return Inertia::render('Dashboard', [
+            return Inertia::render('dashboard', [
                 'role' => 'organizer',
                 'organization' => $organization,
                 'events' => $events,
@@ -46,7 +46,7 @@ class DashboardController extends Controller
         }
 
         if ($user->role === 'administrator') {
-            return Inertia::render('Dashboard', [
+            return Inertia::render('dashboard', [
                 'role' => 'administrator',
                 'stats' => [
                     'total_events' => Event::count(),
@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
         $bookmarks = $user->bookmarkedEvents()->with('organization')->get();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('dashboard', [
             'role' => 'general',
             'registrations' => $registrations,
             'bookmarks' => $bookmarks,

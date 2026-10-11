@@ -14,31 +14,38 @@ class EventController extends Controller
 {
     public function index(Request $request)
     {
+        return Inertia::render('events/index', $this->indexData($request));
+    }
+
+    public function show(Request $request, string $slug)
+    {
+        return Inertia::render('events/show', $this->showData($slug));
+    }
+
+    private function indexData(Request $request): array
+    {
         $categories = Category::all('id', 'name', 'slug');
 
-        $query = Event::where('status', 'published')
+        $events = Event::where('status', 'published')
             ->with('categories')
             ->when($request->filled('category'), function ($q) use ($request) {
                 $q->whereHas('categories', fn ($q) => $q->where('slug', $request->category));
             })
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where('title', 'like', '%'.$request->search.'%');
-            });
+            })
+            ->orderBy('start_at')
+            ->paginate(12)
+            ->withQueryString();
 
-        $events = $query->orderBy('start_at')->paginate(12)->withQueryString();
-
-        $events->getCollection()->each(function ($event) {
-            $event->append('is_bookmarked');
-        });
-
-        return Inertia::render('Events/Index', [
+        return [
             'events' => $events,
             'categories' => $categories,
             'filters' => $request->only(['category', 'search']),
-        ]);
+        ];
     }
 
-    public function show(Request $request, string $slug)
+    private function showData(string $slug): array
     {
         $event = Event::where('slug', $slug)
             ->with(['organization', 'categories'])
@@ -46,6 +53,7 @@ class EventController extends Controller
 
         $isBookmarked = false;
         $registrationStatus = null;
+        $registrationToken = null;
         $user = Auth::user();
 
         if ($user) {
@@ -53,16 +61,20 @@ class EventController extends Controller
                 ->where('event_id', $event->id)
                 ->exists();
 
-            $registrationStatus = Registration::where('user_id', $user->id)
+            $registration = Registration::where('user_id', $user->id)
                 ->where('event_id', $event->id)
-                ->value('status');
+                ->first();
+
+            $registrationStatus = $registration?->status;
+            $registrationToken = $registration?->token;
         }
 
-        return Inertia::render('Events/Show', [
+        return [
             'event' => $event,
             'isBookmarked' => $isBookmarked,
             'registrationStatus' => $registrationStatus,
+            'registrationToken' => $registrationToken,
             'user' => $user,
-        ]);
+        ];
     }
 }

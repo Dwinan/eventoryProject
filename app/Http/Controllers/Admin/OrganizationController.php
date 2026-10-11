@@ -13,10 +13,17 @@ class OrganizationController extends Controller
 {
     public function index()
     {
-        $organizations = Organization::with('user')->latest()->get();
+        $organizations = Organization::with('user')->withCount('events')->latest()->get();
 
-        return Inertia::render('Admin/Organizations', [
+        return Inertia::render('admin/organizations/index', [
             'organizations' => $organizations,
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('admin/organizations/form', [
+            'organization' => null,
         ]);
     }
 
@@ -52,18 +59,14 @@ class OrganizationController extends Controller
 
     public function show(Organization $organization)
     {
-        $organization->load('user', 'events');
-
-        return Inertia::render('Admin/OrganizationDetail', [
-            'organization' => $organization,
-        ]);
+        return redirect()->route('admin.organizations.edit', $organization->id);
     }
 
     public function edit(Organization $organization)
     {
         $organization->load('user');
 
-        return Inertia::render('Admin/OrganizationForm', [
+        return Inertia::render('admin/organizations/form', [
             'organization' => $organization,
         ]);
     }

@@ -5,9 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EventModerationController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Event::with(['organization', 'categories'])->latest('start_at');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%'.$request->search.'%');
+        }
+
+        $events = $query->paginate(15)->withQueryString();
+
+        return Inertia::render('admin/events/index', [
+            'events' => $events,
+            'filters' => $request->only(['status', 'search']),
+        ]);
+    }
+
     public function takeDown(Request $request, Event $event)
     {
         $event->update([

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['organization_id', 'title', 'slug', 'description', 'location', 'start_at', 'end_at', 'poster', 'quota', 'status', 'published_at'])]
+#[Fillable(['organization_id', 'title', 'slug', 'description', 'location', 'start_at', 'end_at', 'poster', 'quota', 'status', 'published_at', 'moderated_by', 'moderated_at'])]
 class Event extends Model
 {
-    /** @use HasFactory<\Database\Factories\EventFactory> */
+    /** @use HasFactory<EventFactory> */
     use HasFactory;
 
     protected function casts(): array

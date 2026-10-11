@@ -12,14 +12,14 @@ Sistem informasi terpadu untuk kegiatan kampus. Eventory menghubungkan organisas
 
 ## Tumpukan Teknologi
 
-| Bagian | Teknologi |
-| --- | --- |
-| Backend | Laravel 13, Eloquent, Laravel Fortify (autentikasi + 2FA) |
-| Frontend | React 19, TypeScript, Inertia.js 3, Tailwind CSS |
-| Aset | Vite |
-| Database | PostgreSQL |
-| QR tiket | `qrcode.react` |
-| Kualitas | PHPStan (Larastan), Pint, ESLint/Prettier |
+| Bagian   | Teknologi                                                 |
+| -------- | --------------------------------------------------------- |
+| Backend  | Laravel 13, Eloquent, Laravel Fortify (autentikasi + 2FA) |
+| Frontend | React 19, TypeScript, Inertia.js 3, Tailwind CSS          |
+| Aset     | Vite                                                      |
+| Database | PostgreSQL                                                |
+| QR tiket | `qrcode.react`                                            |
+| Kualitas | PHPStan (Larastan), Pint, ESLint/Prettier                 |
 
 ## Kebutuhan Sistem
 
@@ -111,27 +111,27 @@ Buka `http://localhost:8000`.
 
 Semua akun hasil seeding memakai password `password`. User role `general` dibuat acak oleh factory dan tidak tercantum di daftar email tetap.
 
-| Peran | Email | Keterangan |
-| --- | --- | --- |
-| Administrator | `admin@eventory.test` | Moderasi event, kelola ormawa & pengguna |
-| Organizer | `bem@eventory.test` | BEM U KBM Unila |
-| Organizer | `himatro@eventory.test` | Himatro Unila |
-| Organizer | `ukm-musik@eventory.test` | UKM Musik |
-| Organizer | `ukm-olahraga@eventory.test` | UKM Olahraga |
-| Organizer | `hmj-manajemen@eventory.test` | HMJ Manajemen |
+| Peran         | Email                         | Keterangan                               |
+| ------------- | ----------------------------- | ---------------------------------------- |
+| Administrator | `admin@eventory.test`         | Moderasi event, kelola ormawa & pengguna |
+| Organizer     | `bem@eventory.test`           | BEM U KBM Unila                          |
+| Organizer     | `himatro@eventory.test`       | Himatro Unila                            |
+| Organizer     | `ukm-musik@eventory.test`     | UKM Musik                                |
+| Organizer     | `ukm-olahraga@eventory.test`  | UKM Olahraga                             |
+| Organizer     | `hmj-manajemen@eventory.test` | HMJ Manajemen                            |
 
 Role `general` untuk mahasiswa; akunnya dibuat otomatis saat seeder (10 user, email acak). Login memakai email masing-masing dengan password bawaan `password`.
 
 ## Perintah yang Sering Dipakai
 
-| Perintah | Fungsi |
-| --- | --- |
-| `composer dev` | Jalankan seluruh service pengembangan |
-| `npm run dev` | Vite dev server (hot reload) |
-| `npm run build` | Bangun aset produksi |
+| Perintah                           | Fungsi                                 |
+| ---------------------------------- | -------------------------------------- |
+| `composer dev`                     | Jalankan seluruh service pengembangan  |
+| `npm run dev`                      | Vite dev server (hot reload)           |
+| `npm run build`                    | Bangun aset produksi                   |
 | `php artisan migrate:fresh --seed` | Reset database dan isi ulang data demo |
-| `php artisan tinker` | REPL interaktif untuk coba Eloquent |
-| `php artisan test` | Jalankan suite test |
-| `composer lint` | Format kode backend dengan Pint |
-| `composer types:check` | Analisis statis dengan PHPStan |
-| `npm run check` | Lint & format frontend |
+| `php artisan tinker`               | REPL interaktif untuk coba Eloquent    |
+| `php artisan test`                 | Jalankan suite test                    |
+| `composer lint`                    | Format kode backend dengan Pint        |
+| `composer types:check`             | Analisis statis dengan PHPStan         |
+| `npm run check`                    | Lint & format frontend                 |

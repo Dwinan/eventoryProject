@@ -16,7 +16,7 @@ class ProfileController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return Inertia::render('Organizer/Profile', [
+        return Inertia::render('organizer/profile', [
             'organization' => $organization->load('user'),
         ]);
     }

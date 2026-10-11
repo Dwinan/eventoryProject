@@ -35,7 +35,7 @@ class EventManagerController extends Controller
 
         $categories = Category::all('id', 'name', 'slug');
 
-        return Inertia::render('Organizer/Events', [
+        return Inertia::render('organizer/events/index', [
             'events' => $events,
             'categories' => $categories,
             'filters' => $request->only(['status', 'search']),
@@ -52,7 +52,7 @@ class EventManagerController extends Controller
 
         $categories = Category::all('id', 'name', 'slug');
 
-        return Inertia::render('Organizer/EventForm', [
+        return Inertia::render('organizer/events/form', [
             'event' => null,
             'categories' => $categories,
         ]);
@@ -101,7 +101,7 @@ class EventManagerController extends Controller
 
         $categories = Category::all('id', 'name', 'slug');
 
-        return Inertia::render('Organizer/EventForm', [
+        return Inertia::render('organizer/events/form', [
             'event' => $event->load('categories'),
             'categories' => $categories,
         ]);

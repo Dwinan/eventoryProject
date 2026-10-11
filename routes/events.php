@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\EventModerationController;
 use App\Http\Controllers\Admin\OrganizationController as AdminOrganizationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Organizer\EventManagerController;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('events', [EventController::class, 'index'])->name('events.index');
 Route::get('events/{slug}', [EventController::class, 'show'])->name('events.show');
-Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
 // Authenticated
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -33,13 +31,17 @@ Route::middleware(['auth', 'verified', 'role:organizer,administrator'])->prefix(
     Route::resource('events', EventManagerController::class)->except(['show']);
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::match(['put', 'patch'], 'profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('presence', [PresenceController::class, 'index'])->name('presence.index');
+    Route::post('presence/verify', [PresenceController::class, 'verify'])->name('presence.verify');
     Route::post('registrations/{registration}/scan', [PresenceController::class, 'scan'])->name('registrations.scan');
 });
 
 // Administrator
 Route::middleware(['auth', 'verified', 'role:administrator'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('events', [EventModerationController::class, 'index'])->name('events.index');
     Route::post('events/{event}/take-down', [EventModerationController::class, 'takeDown'])->name('events.take-down');
     Route::post('events/{event}/restore', [EventModerationController::class, 'restore'])->name('events.restore');
+    Route::patch('organizations/{organization}/toggle', [AdminOrganizationController::class, 'toggle'])->name('organizations.toggle');
     Route::resource('organizations', AdminOrganizationController::class);
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('users', AdminUserController::class);
