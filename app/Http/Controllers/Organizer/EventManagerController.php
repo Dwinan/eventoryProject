@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Organizer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Event;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EventManagerController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response|RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -42,7 +44,7 @@ class EventManagerController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): Response|RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -58,7 +60,7 @@ class EventManagerController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -91,7 +93,7 @@ class EventManagerController extends Controller
             ->with('success', 'Event berhasil dibuat.');
     }
 
-    public function edit(Request $request, Event $event)
+    public function edit(Request $request, Event $event): Response
     {
         $organization = $request->user()->organization;
 
@@ -107,7 +109,7 @@ class EventManagerController extends Controller
         ]);
     }
 
-    public function update(Request $request, Event $event)
+    public function update(Request $request, Event $event): RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -139,7 +141,7 @@ class EventManagerController extends Controller
             ->with('success', 'Event berhasil diperbarui.');
     }
 
-    public function destroy(Request $request, Event $event)
+    public function destroy(Request $request, Event $event): RedirectResponse
     {
         $organization = $request->user()->organization;
 

@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $categories = Category::withCount('events')->get();
 
@@ -19,7 +21,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
@@ -33,7 +35,7 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
@@ -47,7 +49,7 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diupdate.');
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 

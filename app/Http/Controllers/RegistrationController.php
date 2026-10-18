@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Registration;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class RegistrationController extends Controller
 {
-    public function store(Request $request, Event $event)
+    public function store(Request $request, Event $event): RedirectResponse
     {
         if ($event->status !== 'published') {
             return back()->withErrors(['message' => 'Event belum dipublikasikan.']);
@@ -39,7 +40,7 @@ class RegistrationController extends Controller
         return back();
     }
 
-    public function destroy(Request $request, Event $event)
+    public function destroy(Request $request, Event $event): RedirectResponse
     {
         Registration::where('event_id', $event->id)
             ->where('user_id', $request->user()->id)

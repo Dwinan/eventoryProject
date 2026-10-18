@@ -1,5 +1,8 @@
+'use client';
+
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import QRScanner from '@/components/qr-scanner';
 
 interface EventOption {
     id: number;
@@ -34,10 +37,15 @@ export default function Scan({ events = [] }: Props) {
     const [isError, setIsError] = useState(false);
     const [lastVerified, setLastVerified] =
         useState<VerifiedRegistration | null>(null);
+    const [scannedToken, setScannedToken] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!token.trim()) {
+        await verifyToken(token);
+    };
+
+    const verifyToken = async (value: string) => {
+        if (!value.trim() || processing) {
             return;
         }
 
@@ -49,7 +57,7 @@ export default function Scan({ events = [] }: Props) {
             const csrfToken =
                 (
                     document.querySelector(
-                        'meta[name="csrf-token"]',
+                        'meta[name=\"csrf-token\"]',
                     ) as HTMLMetaElement
                 )?.content ?? '';
 
@@ -61,7 +69,7 @@ export default function Scan({ events = [] }: Props) {
                     'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    token: token.trim(),
+                    token: value.trim(),
                     event_id: eventId || null,
                 }),
             });
@@ -87,6 +95,12 @@ export default function Scan({ events = [] }: Props) {
             setProcessing(false);
         }
     };
+
+    const handleScannedToken = useCallback((token: string) => {
+        setToken(token);
+        setScannedToken(token);
+        verifyToken(token);
+    }, [verifyToken]);
 
     return (
         <>
@@ -222,8 +236,31 @@ export default function Scan({ events = [] }: Props) {
                                 ini.
                             </p>
                         )}
+
+                        {/* Show recently scanned token */}
+                        {scannedToken && !lastVerified && (
+                            <div className="mt-4 p-3 rounded-lg border border-neutral-200 p-2 text-sm dark:border-neutral-800">
+                                <span className="text-xs text-neutral-500">
+                                    Terakhir Discan:
+                                </span>
+                                <p className="font-mono word-break-break-all">
+                                    {scannedToken}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
+            </div>
+
+            {/* QR Scanner Component */}
+            <div className="mt-6 p-6 rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">Scanner QR Kamera</h2>
+                    <p className="text-sm text-neutral-500">
+                        Alternatif untuk input token manual di atas
+                    </p>
+                </div>
+                <QRScanner onScan={handleScannedToken} />
             </div>
         </>
     );

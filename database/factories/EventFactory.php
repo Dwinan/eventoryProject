@@ -28,7 +28,7 @@ class EventFactory extends Factory
         $isPublished = $startAt->isPast() || fake()->boolean(70);
 
         return [
-            'organization_id' => $organization?->id ?? null,
+            'organization_id' => $organization->id ?? null,
             'title' => fake()->sentence(4),
             'slug' => Str::slug(fake()->sentence(3)),
             'description' => fake()->paragraph(),

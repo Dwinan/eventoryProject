@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Organizer;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    public function show(Request $request)
+    public function show(Request $request): Response|RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -21,7 +23,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $organization = $request->user()->organization;
 

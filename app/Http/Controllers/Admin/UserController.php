@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = User::query();
 
@@ -37,14 +39,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('admin/users/form', [
             'user' => null,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -65,19 +67,19 @@ class UserController extends Controller
             ->with('success', "Pengguna {$user->name} berhasil dibuat.");
     }
 
-    public function show(User $user)
+    public function show(User $user): RedirectResponse
     {
         return redirect()->route('admin.users.edit', $user->id);
     }
 
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
         return Inertia::render('admin/users/form', [
             'user' => $user,
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -102,7 +104,7 @@ class UserController extends Controller
             ->with('success', "Pengguna {$user->name} berhasil diperbarui.");
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         // Prevent deleting yourself
         if ($user->id === auth()->id()) {

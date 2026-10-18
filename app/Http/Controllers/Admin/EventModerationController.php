@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EventModerationController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = Event::with(['organization', 'categories'])->latest('start_at');
 
@@ -29,7 +31,7 @@ class EventModerationController extends Controller
         ]);
     }
 
-    public function takeDown(Request $request, Event $event)
+    public function takeDown(Request $request, Event $event): RedirectResponse
     {
         $event->update([
             'status' => 'draft',
@@ -40,7 +42,7 @@ class EventModerationController extends Controller
         return back()->with('success', 'Event ditandai sebagai draft.');
     }
 
-    public function restore(Request $request, Event $event)
+    public function restore(Request $request, Event $event): RedirectResponse
     {
         $event->update([
             'status' => 'published',

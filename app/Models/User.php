@@ -51,21 +51,33 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /**
+     * @return HasOne<Organization, $this>
+     */
     public function organization(): HasOne // profil ormawa bila role organizer
     {
         return $this->hasOne(Organization::class);
     }
 
+    /**
+     * @return HasMany<Registration, $this>
+     */
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class);
     }
 
+    /**
+     * @return HasMany<Bookmark, $this>
+     */
     public function bookmarks(): HasMany
     {
         return $this->hasMany(Bookmark::class);
     }
 
+    /**
+     * @return BelongsToMany<Event, $this>
+     */
     public function bookmarkedEvents(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'bookmarks')->withTimestamps();

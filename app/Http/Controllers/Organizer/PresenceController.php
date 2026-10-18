@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Organizer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Registration;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PresenceController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response|RedirectResponse
     {
         $organization = $request->user()->organization;
 
@@ -27,7 +30,7 @@ class PresenceController extends Controller
         ]);
     }
 
-    public function verify(Request $request)
+    public function verify(Request $request): JsonResponse
     {
         $organization = $request->user()->organization;
 
@@ -73,7 +76,7 @@ class PresenceController extends Controller
         ]);
     }
 
-    public function scan(Request $request, Registration $registration)
+    public function scan(Request $request, Registration $registration): JsonResponse
     {
         $validated = $request->validate([
             'token' => 'required|string',

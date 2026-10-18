@@ -14,6 +14,9 @@ class Category extends Model
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
+    /**
+     * @return BelongsToMany<Event, $this>
+     */
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'event_category');

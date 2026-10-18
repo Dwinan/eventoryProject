@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Organization;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class OrganizationController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         $organizations = Organization::with('user')->withCount('events')->latest()->get();
 
@@ -20,14 +22,14 @@ class OrganizationController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('admin/organizations/form', [
             'organization' => null,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -57,12 +59,12 @@ class OrganizationController extends Controller
             ->with('success', "Organisasi {$organization->name} berhasil dibuat.");
     }
 
-    public function show(Organization $organization)
+    public function show(Organization $organization): RedirectResponse
     {
         return redirect()->route('admin.organizations.edit', $organization->id);
     }
 
-    public function edit(Organization $organization)
+    public function edit(Organization $organization): Response
     {
         $organization->load('user');
 
@@ -71,7 +73,7 @@ class OrganizationController extends Controller
         ]);
     }
 
-    public function update(Request $request, Organization $organization)
+    public function update(Request $request, Organization $organization): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -92,7 +94,7 @@ class OrganizationController extends Controller
             ->with('success', 'Organisasi berhasil diperbarui.');
     }
 
-    public function destroy(Organization $organization)
+    public function destroy(Organization $organization): RedirectResponse
     {
         $organization->user->delete();
         $organization->delete();
@@ -101,7 +103,7 @@ class OrganizationController extends Controller
             ->with('success', 'Organisasi berhasil dihapus.');
     }
 
-    public function toggle(Request $request, Organization $organization)
+    public function toggle(Request $request, Organization $organization): RedirectResponse
     {
         $organization->update(['is_active' => ! $organization->is_active]);
 

@@ -6,22 +6,29 @@ use App\Models\Bookmark;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Registration;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class EventController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         return Inertia::render('events/index', $this->indexData($request));
     }
 
-    public function show(Request $request, string $slug)
+    public function show(Request $request, string $slug): Response
     {
         return Inertia::render('events/show', $this->showData($slug));
     }
 
+    /**
+     * @return array{events: LengthAwarePaginator<int, Event>, categories: Collection<int, Category>, filters: array{category?: string, search?: string}}
+     */
     private function indexData(Request $request): array
     {
         $categories = Category::all('id', 'name', 'slug');
@@ -45,6 +52,15 @@ class EventController extends Controller
         ];
     }
 
+    /**
+     * @return array{
+     *     event: Event,
+     *     isBookmarked: bool,
+     *     registrationStatus: ?string,
+     *     registrationToken: ?string,
+     *     user: User|null
+     * }
+     */
     private function showData(string $slug): array
     {
         $event = Event::where('slug', $slug)

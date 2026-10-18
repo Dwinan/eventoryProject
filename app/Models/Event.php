@@ -26,21 +26,33 @@ class Event extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Organization, $this>
+     */
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }
 
+    /**
+     * @return BelongsToMany<Category, $this>
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'event_category');
     }
 
+    /**
+     * @return HasMany<Registration, $this>
+     */
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class);
     }
 
+    /**
+     * @return BelongsToMany<User, $this>
+     */
     public function bookmarkedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
