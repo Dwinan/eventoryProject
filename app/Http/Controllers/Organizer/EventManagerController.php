@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -134,6 +135,9 @@ class EventManagerController extends Controller
         ]);
 
         if ($request->hasFile('poster')) {
+            if ($event->poster) {
+                Storage::disk('public')->delete($event->poster);
+            }
             $validated['poster'] = $request->file('poster')->store('posters', 'public');
         } else {
             // jika tidak ada file baru, jangan timpa poster lama
@@ -145,7 +149,7 @@ class EventManagerController extends Controller
         $event->update($validated);
 
         if ($request->has('categories')) {
-            $event->categories()->sync($request->input('categories'));
+            $event->categories()->sync($request->input('categories', []));
         }
 
         return redirect()->route('organizer.events.edit', $event->id)
@@ -158,6 +162,10 @@ class EventManagerController extends Controller
 
         if (! $organization || $event->organization_id !== $organization->id) {
             abort(403);
+        }
+
+        if ($event->poster) {
+            Storage::disk('public')->delete($event->poster);
         }
 
         $event->delete();

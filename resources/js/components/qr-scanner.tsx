@@ -17,12 +17,16 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
 
     const checkCameraPermission = useCallback(async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-            stream.getTracks().forEach(track => track.stop());
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' },
+            });
+            stream.getTracks().forEach((track) => track.stop());
             setHasCamera(true);
         } catch {
             setHasCamera(false);
-            setError('Akses kamera ditolak atau tidak tersedia. Gunakan input manual di samping.');
+            setError(
+                'Akses kamera ditolak atau tidak tersedia. Gunakan input manual di samping.',
+            );
         }
     }, []);
 
@@ -40,7 +44,7 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
                 showTorchButtonIfSupported: true,
                 showZoomSliderIfSupported: true,
             },
-            /* verbose= */ false
+            /* verbose= */ false,
         );
 
         scanner.render(
@@ -52,9 +56,9 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
                     html5QrcodeRef.current = null;
                 }
             },
-            (errorMessage: string) => {
+            () => {
                 // ignore scan errors (noise, etc)
-            }
+            },
         );
 
         html5QrcodeRef.current = scanner;
@@ -71,23 +75,32 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
     }, []);
 
     useEffect(() => {
-        checkCameraPermission();
-        return () => stopScanner();
+        void checkCameraPermission();
+        return () => {
+            stopScanner();
+        };
     }, [checkCameraPermission, stopScanner]);
 
     useEffect(() => {
-        if (scanning && hasCamera && scannerRef.current && !html5QrcodeRef.current) {
+        if (
+            scanning &&
+            hasCamera &&
+            scannerRef.current &&
+            !html5QrcodeRef.current
+        ) {
             startScanner();
         }
         return () => stopScanner();
     }, [scanning, hasCamera, startScanner, stopScanner]);
 
     return (
-        <div className={`rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-950 ${className}`}>
+        <div
+            className={`rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-950 ${className}`}
+        >
             <h2 className="text-base font-semibold">Scanner QR Kamera</h2>
 
             {error && !hasCamera ? (
-                <div className="mt-4 p-3 rounded-lg bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-sm">
+                <div className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-800 dark:bg-amber-950 dark:text-amber-300">
                     {error}
                 </div>
             ) : (
@@ -104,7 +117,15 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
 
                     {scanning && (
                         <div className="mt-4">
-                            <div id="qr-scanner" ref={scannerRef} style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }} />
+                            <div
+                                id="qr-scanner"
+                                ref={scannerRef}
+                                style={{
+                                    width: '100%',
+                                    maxWidth: '400px',
+                                    margin: '0 auto',
+                                }}
+                            />
                             <p className="mt-2 text-center text-sm text-neutral-500">
                                 Arahkan kamera ke QR code tiket peserta
                             </p>
@@ -120,7 +141,8 @@ export default function QRScanner({ onScan, className = '' }: QRScannerProps) {
 
                     {!hasCamera && !error && (
                         <div className="mt-4 text-center text-sm text-neutral-500">
-                            Periksa izin kamera browser untuk menggunakan scanner.
+                            Periksa izin kamera browser untuk menggunakan
+                            scanner.
                         </div>
                     )}
                 </>

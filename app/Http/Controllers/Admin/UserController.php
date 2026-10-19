@@ -60,8 +60,8 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
-            'email_verified_at' => now(),
         ]);
+        $user->forceFill(['email_verified_at' => now()])->save();
 
         return redirect()->route('admin.users.index')
             ->with('success', "Pengguna {$user->name} berhasil dibuat.");

@@ -78,6 +78,12 @@ class PresenceController extends Controller
 
     public function scan(Request $request, Registration $registration): JsonResponse
     {
+        $organization = $request->user()->organization;
+
+        if (! $organization || $registration->event->organization_id !== $organization->id) {
+            return response()->json(['message' => 'Akses ditolak atau bukan kegiatan organisasi Anda.'], 403);
+        }
+
         $validated = $request->validate([
             'token' => 'required|string',
         ]);

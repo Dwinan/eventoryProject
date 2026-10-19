@@ -57,7 +57,7 @@ export default function Scan({ events = [] }: Props) {
             const csrfToken =
                 (
                     document.querySelector(
-                        'meta[name=\"csrf-token\"]',
+                        'meta[name="csrf-token"]',
                     ) as HTMLMetaElement
                 )?.content ?? '';
 
@@ -96,11 +96,14 @@ export default function Scan({ events = [] }: Props) {
         }
     };
 
-    const handleScannedToken = useCallback((token: string) => {
-        setToken(token);
-        setScannedToken(token);
-        verifyToken(token);
-    }, [verifyToken]);
+    const handleScannedToken = useCallback(
+        (token: string) => {
+            setToken(token);
+            setScannedToken(token);
+            void verifyToken(token);
+        },
+        [verifyToken],
+    );
 
     return (
         <>
@@ -239,11 +242,11 @@ export default function Scan({ events = [] }: Props) {
 
                         {/* Show recently scanned token */}
                         {scannedToken && !lastVerified && (
-                            <div className="mt-4 p-3 rounded-lg border border-neutral-200 p-2 text-sm dark:border-neutral-800">
+                            <div className="mt-4 rounded-lg border border-neutral-200 p-2 p-3 text-sm dark:border-neutral-800">
                                 <span className="text-xs text-neutral-500">
                                     Terakhir Discan:
                                 </span>
-                                <p className="font-mono word-break-break-all">
+                                <p className="word-break-break-all font-mono">
                                     {scannedToken}
                                 </p>
                             </div>
@@ -253,8 +256,8 @@ export default function Scan({ events = [] }: Props) {
             </div>
 
             {/* QR Scanner Component */}
-            <div className="mt-6 p-6 rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
-                <div className="flex justify-between items-center mb-4">
+            <div className="mt-6 rounded-xl border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-950">
+                <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-xl font-semibold">Scanner QR Kamera</h2>
                     <p className="text-sm text-neutral-500">
                         Alternatif untuk input token manual di atas

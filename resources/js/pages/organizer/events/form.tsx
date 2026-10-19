@@ -247,7 +247,10 @@ export default function Form({ event, categories }: Props) {
                                     const file = e.target.files?.[0] ?? null;
                                     setData('poster', file);
                                     if (file) {
-                                        setData('poster_url', URL.createObjectURL(file));
+                                        setData(
+                                            'poster_url',
+                                            URL.createObjectURL(file),
+                                        );
                                     }
                                 }}
                                 className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"

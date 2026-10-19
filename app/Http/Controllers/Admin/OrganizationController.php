@@ -7,6 +7,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -39,11 +40,13 @@ class OrganizationController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
-        $user = User::factory()->create([
+        $user = User::create([
             'role' => 'organizer',
             'email' => $validated['email'],
             'name' => $validated['name'],
+            'password' => Hash::make(Str::random(16)),
         ]);
+        $user->forceFill(['email_verified_at' => now()])->save();
 
         $organization = Organization::create([
             'user_id' => $user->id,

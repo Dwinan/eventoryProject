@@ -68,10 +68,19 @@ class EventController extends Controller
             ->with(['organization', 'categories'])
             ->firstOrFail();
 
+        $user = Auth::user();
+
+        if ($event->status !== 'published') {
+            $canViewDraft = $user && (
+                $user->role === 'administrator' ||
+                ($user->role === 'organizer' && $user->organization?->id === $event->organization_id)
+            );
+            abort_unless($canViewDraft, 404);
+        }
+
         $isBookmarked = false;
         $registrationStatus = null;
         $registrationToken = null;
-        $user = Auth::user();
 
         if ($user) {
             $isBookmarked = Bookmark::where('user_id', $user->id)
