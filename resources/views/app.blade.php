@@ -43,7 +43,7 @@
         @endphp
         @vite(['resources/css/app.css', 'resources/js/app.tsx', $pageFile])
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <title>{{ config('app.name', 'Eventory') }}</title>
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">

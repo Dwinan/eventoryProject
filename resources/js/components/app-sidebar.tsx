@@ -4,6 +4,7 @@ import {
     Building2,
     Calendar,
     FolderGit2,
+    Home,
     LayoutGrid,
     MapPin,
     QrCode,
@@ -28,6 +29,11 @@ import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
+    {
+        title: 'Beranda',
+        href: '/',
+        icon: Home,
+    },
     {
         title: 'Dashboard',
         href: dashboard(),
@@ -78,13 +84,13 @@ const adminNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        title: 'GitHub',
+        href: 'https://github.com/your-org/eventory',
         icon: FolderGit2,
     },
     {
         title: 'Dokumentasi',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        href: 'https://docs.eventory.app',
         icon: BookOpen,
     },
 ];
