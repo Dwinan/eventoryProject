@@ -27,7 +27,7 @@ class EventController extends Controller
     }
 
     /**
-     * @return array{events: LengthAwarePaginator<int, Event>, categories: Collection<int, Category>, filters: array{category?: string, search?: string}}
+     * @return array{events: LengthAwarePaginator<int, Event>, categories: Collection<int, Category>, filters: object}
      */
     private function indexData(Request $request): array
     {
@@ -48,7 +48,8 @@ class EventController extends Controller
         return [
             'events' => $events,
             'categories' => $categories,
-            'filters' => $request->only(['category', 'search']),
+            // cast ke object: only() balikin [] saat kosong, bikin filters.sort = Array.prototype.sort di JS
+            'filters' => (object) $request->only(['category', 'search', 'sort']),
         ];
     }
 

@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { formatTanggal } from '@/lib/format';
 import { useState } from 'react';
 
@@ -15,6 +15,7 @@ interface Event {
     start_at: string;
     location: string;
     quota: number | null;
+    poster: string | null;
     categories: Category[];
 }
 
@@ -74,10 +75,43 @@ export default function Index({ events, categories, filters }: Props) {
         );
     };
 
+    const { auth } = usePage().props;
+
     return (
         <>
             <Head title="Daftar Event" />
-            <div className="p-6">
+            <div className="min-h-screen bg-white dark:bg-neutral-950">
+                <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-950/80">
+                    <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex h-16 items-center justify-between">
+                            <div className="flex items-center gap-8">
+                                <Link href="/" className="text-xl font-bold text-neutral-900 dark:text-white">
+                                    Eventory
+                                </Link>
+                                <Link href="/events" className="text-sm font-medium text-neutral-900 dark:text-white">
+                                    Jelajahi Event
+                                </Link>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                {auth.user ? (
+                                    <Link href="/dashboard" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200">
+                                        Dashboard
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link href="/auth/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+                                            Masuk
+                                        </Link>
+                                        <Link href="/auth/register" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200">
+                                            Daftar
+                                        </Link>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            <div className="mx-auto max-w-7xl p-6">
                 <div className="mb-6">
                     <h1 className="text-2xl font-bold">Daftar Event</h1>
                     <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
@@ -206,31 +240,35 @@ export default function Index({ events, categories, filters }: Props) {
                     </>
                 )}
             </div>
+            </div>
         </>
     );
 }
 
 function EventCard({ event }: { event: Event }) {
     return (
-        <div className="flex flex-col rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
-            <h2 className="font-semibold">
-                <Link href={`/events/${event.slug}`}>{event.title}</Link>
-            </h2>
-            <p className="mt-1 text-sm">{formatTanggal(event.start_at)}</p>
-            <p className="text-sm">{event.location}</p>
-            {event.quota !== null && (
-                <p className="mt-1 text-sm">Kuota: {event.quota}</p>
+        <Link href={`/events/${event.slug}`} className="flex flex-col rounded-lg border border-neutral-200 overflow-hidden dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700">
+            {event.poster && (
+                <img src={`/storage/${event.poster.startsWith('storage/') ? event.poster.slice(8) : event.poster}`} alt={event.title} className="h-48 w-full object-cover" />
             )}
-            <div className="mt-2">
-                {event.categories.map((c) => (
-                    <span
-                        key={c.id}
-                        className="mr-1 rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900"
-                    >
-                        {c.name}
-                    </span>
-                ))}
+            <div className="p-4">
+                <h2 className="font-semibold">{event.title}</h2>
+                <p className="mt-1 text-sm">{formatTanggal(event.start_at)}</p>
+                <p className="text-sm">{event.location}</p>
+                {event.quota !== null && (
+                    <p className="mt-1 text-sm">Kuota: {event.quota}</p>
+                )}
+                <div className="mt-2">
+                    {event.categories.map((c) => (
+                        <span
+                            key={c.id}
+                            className="mr-1 rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900"
+                        >
+                            {c.name}
+                        </span>
+                    ))}
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }

@@ -31,7 +31,8 @@ export default function Form({ event, categories }: Props) {
         start_at: event?.start_at ? event.start_at.slice(0, 16) : '',
         end_at: event?.end_at ? event.end_at.slice(0, 16) : '',
         quota: event?.quota ?? '',
-        poster: event?.poster ?? '',
+        poster: null as File | null,
+        poster_url: event?.poster ?? '',
         status: event?.status ?? 'draft',
         categories: event?.categories ? event.categories.map((c) => c.id) : [],
     });
@@ -42,7 +43,8 @@ export default function Form({ event, categories }: Props) {
             ? `/organizer/events/${event!.id}`
             : '/organizer/events';
         const method = isEdit ? put : post;
-        method(url);
+        // poster null = tidak ganti file lama (dihapus di backend update)
+        method(url, { forceFormData: true });
     };
 
     const selectedCategoryIds = new Set(
@@ -236,17 +238,29 @@ export default function Form({ event, categories }: Props) {
 
                         <div className="sm:col-span-2">
                             <label className="block text-sm font-medium">
-                                Poster (URL Gambar)
+                                Poster Kegiatan
                             </label>
                             <input
-                                type="url"
-                                value={data.poster ?? ''}
-                                onChange={(e) =>
-                                    setData('poster', e.target.value)
-                                }
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0] ?? null;
+                                    setData('poster', file);
+                                    if (file) {
+                                        setData('poster_url', URL.createObjectURL(file));
+                                    }
+                                }}
                                 className="mt-1 block w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-900"
-                                placeholder="https://example.com/poster.jpg"
                             />
+                            {data.poster_url && (
+                                <div className="mt-2">
+                                    <img
+                                        src={data.poster_url}
+                                        alt="Preview poster"
+                                        className="h-32 w-auto rounded object-cover"
+                                    />
+                                </div>
+                            )}
                             {errors.poster && (
                                 <p className="mt-1 text-xs text-red-600">
                                     {errors.poster}

@@ -40,7 +40,7 @@ class EventManagerController extends Controller
         return Inertia::render('organizer/events/index', [
             'events' => $events,
             'categories' => $categories,
-            'filters' => $request->only(['status', 'search']),
+            'filters' => (object) $request->only(['status', 'search']),
         ]);
     }
 
@@ -76,9 +76,13 @@ class EventManagerController extends Controller
             'start_at' => 'required|date',
             'end_at' => 'required|date|after:start_at',
             'quota' => 'nullable|integer|min:1',
-            'poster' => 'nullable|string',
+            'poster' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
         ]);
+
+        if ($request->hasFile('poster')) {
+            $validated['poster'] = $request->file('poster')->store('posters', 'public');
+        }
 
         $validated['organization_id'] = $organization->id;
         $validated['published_at'] = $validated['status'] === 'published' ? now() : null;
@@ -125,9 +129,16 @@ class EventManagerController extends Controller
             'start_at' => 'required|date',
             'end_at' => 'required|date|after:start_at',
             'quota' => 'nullable|integer|min:1',
-            'poster' => 'nullable|string',
+            'poster' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,published',
         ]);
+
+        if ($request->hasFile('poster')) {
+            $validated['poster'] = $request->file('poster')->store('posters', 'public');
+        } else {
+            // jika tidak ada file baru, jangan timpa poster lama
+            unset($validated['poster']);
+        }
 
         $validated['published_at'] = $validated['status'] === 'published' ? now() : null;
 

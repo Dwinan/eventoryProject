@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { formatTanggal } from '@/lib/format';
 import { useState } from 'react';
 import { EventTicketQR } from '@/components/event-ticket-qr';
@@ -23,6 +23,7 @@ interface Event {
     end_at: string;
     location: string;
     quota: number | null;
+    poster: string | null;
     description: string;
     categories: Category[];
     organization: Organization | null;
@@ -91,10 +92,43 @@ export default function Show({
         );
     };
 
+    const { auth } = usePage().props;
+
     return (
         <>
             <Head title={event.title} />
-            <div className="p-6">
+            <div className="min-h-screen bg-white dark:bg-neutral-950">
+                <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/80 backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-950/80">
+                    <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex h-16 items-center justify-between">
+                            <div className="flex items-center gap-8">
+                                <Link href="/" className="text-xl font-bold text-neutral-900 dark:text-white">
+                                    Eventory
+                                </Link>
+                                <Link href="/events" className="text-sm font-medium text-neutral-900 dark:text-white">
+                                    Jelajahi Event
+                                </Link>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                {auth.user ? (
+                                    <Link href="/dashboard" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200">
+                                        Dashboard
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link href="/auth/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+                                            Masuk
+                                        </Link>
+                                        <Link href="/auth/register" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200">
+                                            Daftar
+                                        </Link>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            <div className="mx-auto max-w-7xl p-6">
                 <Link
                     href="/events"
                     className="text-sm text-neutral-600 hover:underline dark:text-neutral-400"
@@ -105,6 +139,14 @@ export default function Show({
                 <p className="text-neutral-600 dark:text-neutral-400">
                     Oleh {event.organization?.name ?? '-'}
                 </p>
+
+                {event.poster && (
+                    <img
+                        src={`/storage/${event.poster.startsWith('storage/') ? event.poster.slice(8) : event.poster}`}
+                        alt={event.title}
+                        className="mt-4 max-h-96 w-full object-cover rounded-lg"
+                    />
+                )}
 
                 <div className="mt-4 grid gap-3 text-sm sm:max-w-lg">
                     <p>
@@ -256,6 +298,7 @@ export default function Show({
                     </div>
                 </div>
             )}
+            </div>
         </>
     );
 }

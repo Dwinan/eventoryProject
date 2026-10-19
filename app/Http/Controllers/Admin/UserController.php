@@ -35,7 +35,7 @@ class UserController extends Controller
 
         return Inertia::render('admin/users/index', [
             'users' => $users,
-            'filters' => $request->only(['search', 'role']),
+            'filters' => (object) $request->only(['search', 'role']),
         ]);
     }
 

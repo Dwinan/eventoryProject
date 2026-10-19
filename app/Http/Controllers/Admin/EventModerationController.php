@@ -27,7 +27,7 @@ class EventModerationController extends Controller
 
         return Inertia::render('admin/events/index', [
             'events' => $events,
-            'filters' => $request->only(['status', 'search']),
+            'filters' => (object) $request->only(['status', 'search']),
         ]);
     }
 
